@@ -120,22 +120,40 @@
 
         /* --- HERO SLIDESHOW SECTION --- */
         .hero {
-            padding-top: 120px;
+            padding-top: 120px; /* Adjusted for full page view */
             padding-bottom: 50px;
+            padding-left: 5%;
+            padding-right: 5%;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        .slideshow-container {
+        .hero-wrapper {
             position: relative;
             width: 100%;
             max-width: 1400px;
             aspect-ratio: 16 / 7;
             border-radius: 16px;
+            transition: box-shadow 0.8s ease-in-out;
+        }
+
+        /* --- THEME-BASED GLOW EFFECT --- */
+        .hero-wrapper.theme-exhaust { box-shadow: 0 0 60px -10px #8A2BE2; }
+        .hero-wrapper.theme-packages { box-shadow: 0 0 60px -10px #ff1a00; }
+        .hero-wrapper.theme-wheels { box-shadow: 0 0 60px -10px #008000; }
+        .hero-wrapper.theme-cooling { box-shadow: 0 0 60px -10px #00c5ff; }
+
+        .slideshow-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 16px;
             overflow: hidden;
-            z-index: 0;
-            background: #000; /* Black background for all slides */
+            z-index: 1;
+            background: #000;
         }
 
         .slideshow-container::before {
@@ -151,7 +169,7 @@
                 linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor;
             mask-composite: exclude;
-            z-index: 3; /* Above slide content but below text */
+            z-index: 4;
             pointer-events: none;
             transition: background-image 0.8s ease-in-out;
         }
@@ -173,7 +191,7 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            z-index: 2;
+            z-index: 3;
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
@@ -183,7 +201,7 @@
             height: 100%;
         }
 
-        .slide-content::after { /* Gradient overlay for text readability */
+        .slide-content::after {
             content: '';
             position: absolute;
             bottom: 0; left: 0; width: 100%; height: 70%;
@@ -198,7 +216,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            z-index: 0;
+            z-index: 1;
         }
 
         .slide-background.video-fit-height {
@@ -577,7 +595,7 @@
             .main-nav a { font-size: 24px; }
             
             .hero { padding-top: 100px; }
-            .slideshow-container { aspect-ratio: 16 / 9; }
+            .hero-wrapper, .slideshow-container { aspect-ratio: 16 / 9; }
         }
     </style>
 </head>
@@ -606,177 +624,178 @@
     <main>
         <!-- HERO SLIDESHOW SECTION -->
         <section class="hero">
-            <div class="slideshow-container" id="slideshow">
-                
-                <div class="slide" data-theme="theme-exhaust">
-                    <video class="slide-background video-fit-height" id="exhaust-video" muted playsinline>
-                        <source src="https://github.com/WIKDMotorsports/TestSite/raw/refs/heads/main/5-8mbps.mp4" type="video/mp4">
-                    </video>
-                    <div class="slide-content">
-                        <div class="slide-title-group">
-                            <h1>Titanium Exhausts</h1>
-                            <a href="#" class="btn"><span>Learn More</span></a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="slide" data-theme="theme-packages">
-                    <img src="https://cdn.shopify.com/s/files/1/0671/4635/0805/files/WIKDonDyno.jpg?v=1752603899" alt="Performance Packages" class="slide-background">
-                    <div class="slide-content">
-                        <div class="slide-title-group">
-                            <h1>Performance Packages</h1>
-                            <a href="#packages" class="btn"><span>Explore</span></a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="slide" data-theme="theme-wheels">
-                    <img src="https://cdn.shopify.com/s/files/1/0671/4635/0805/files/f450.jpg?v=1750445422" alt="F-450 Wheel & Tire Package" class="slide-background">
-                    <div class="slide-content">
-                        <div class="slide-title-group">
-                            <h1>F-450 Wheel & Tire</h1>
-                            <a href="#" class="btn"><span>View Package</span></a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="slide" data-theme="theme-cooling">
-                    <iframe class="slide-background iframe-fit-height" id="cooling-fan-iframe" srcdoc='
-                        <!DOCTYPE html>
-                        <html lang="en">
-                        <head>
-                            <meta charset="UTF-8">
-                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                            <title>Interactive Video</title>
-                            <script src="https://cdn.tailwindcss.com"></script>
-                            <style>
-                                html, body {
-                                    height: 100%; width: 100%; margin: 0; padding: 0;
-                                    font-family: "Inter", sans-serif; display: flex;
-                                    justify-content: center; align-items: center;
-                                    background-color: #000; box-sizing: border-box;
-                                    overflow: hidden;
-                                }
-                                .video-container {
-                                    position: relative; width: 100%; max-width: 1600px;
-                                    background-color: #000; opacity: 0;
-                                    transform: scale(0.98) translateY(8px);
-                                    animation: fadeInZoomUp 2.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-                                    transform-origin: center center;
-                                }
-                                @keyframes fadeInZoomUp {
-                                    from { opacity: 0; transform: scale(0.98) translateY(8px); }
-                                    to { opacity: 1; transform: scale(1) translateY(0); }
-                                }
-                                video { width: 100%; height: auto; display: block; cursor: pointer; }
-                            </style>
-                        </head>
-                        <body>
-                            <div class="video-container">
-                                <video id="interactiveVideo" preload="metadata">
-                                    <source src="https://github.com/WIKDMotorsports/TestSite/raw/refs/heads/main/FanInteract.mp4" type="video/mp4">
-                                    Your browser does not support the video tag.
-                                </video>
+            <div class="hero-wrapper">
+                <div class="slideshow-container" id="slideshow">
+                    
+                    <div class="slide" data-theme="theme-exhaust">
+                        <video class="slide-background video-fit-height" id="exhaust-video" muted playsinline>
+                            <source src="https://github.com/WIKDMotorsports/TestSite/raw/refs/heads/main/5-8mbps.mp4" type="video/mp4">
+                        </video>
+                        <div class="slide-content">
+                            <div class="slide-title-group">
+                                <h1>Titanium Exhausts</h1>
+                                <a href="#" class="btn"><span>Learn More</span></a>
                             </div>
-                            <script>
-                                document.addEventListener("DOMContentLoaded", () => {
-                                    const video = document.getElementById("interactiveVideo");
-                                    const framesToLoop = 16, frameRate = 22, initialPlayFrames = 4, reversePlayFrames = 4;
-                                    let loopStartTime = 0, initialPlayTriggerTime = 0;
-                                    let isHovering = false, isHolding = false, holdTimeout = null;
-                                    const holdDelay = 200;
-                                    let isPlayingInitialSegment = false, isReversing = false, animationFrameId = null;
-                                    const isTouchDevice = () => ("ontouchstart" in window) || (navigator.maxTouchPoints > 0);
-                                    function stopReversePlayback() {
-                                        if (animationFrameId) cancelAnimationFrame(animationFrameId);
-                                        animationFrameId = null; isReversing = false;
+                        </div>
+                    </div>
+
+                    <div class="slide" data-theme="theme-packages">
+                        <img src="https://cdn.shopify.com/s/files/1/0671/4635/0805/files/WIKDonDyno.jpg?v=1752603899" alt="Performance Packages" class="slide-background">
+                        <div class="slide-content">
+                            <div class="slide-title-group">
+                                <h1>Performance Packages</h1>
+                                <a href="#packages" class="btn"><span>Explore</span></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="slide" data-theme="theme-wheels">
+                        <img src="https://cdn.shopify.com/s/files/1/0671/4635/0805/files/f450.jpg?v=1750445422" alt="F-450 Wheel & Tire Package" class="slide-background">
+                        <div class="slide-content">
+                            <div class="slide-title-group">
+                                <h1>F-450 Wheel & Tire</h1>
+                                <a href="#" class="btn"><span>View Package</span></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="slide" data-theme="theme-cooling">
+                        <iframe class="slide-background iframe-fit-height" id="cooling-fan-iframe" srcdoc='
+                            <!DOCTYPE html>
+                            <html lang="en">
+                            <head>
+                                <meta charset="UTF-8">
+                                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                                <title>Interactive Video</title>
+                                <style>
+                                    html, body {
+                                        height: 100%; width: 100%; margin: 0; padding: 0;
+                                        font-family: "Inter", sans-serif; display: flex;
+                                        justify-content: center; align-items: center;
+                                        background-color: #000; box-sizing: border-box;
+                                        overflow: hidden;
                                     }
-                                    function playReverseFrames() {
-                                        stopReversePlayback(); isReversing = true; video.pause();
-                                        const targetReverseTime = Math.max(0, video.currentTime - (reversePlayFrames / frameRate));
-                                        const reverseStep = () => {
-                                            if (!isReversing || video.currentTime <= targetReverseTime) {
-                                                video.currentTime = 0; video.pause(); stopReversePlayback(); return;
-                                            }
-                                            video.currentTime = Math.max(0, video.currentTime - (1 / frameRate));
-                                            if (isReversing) animationFrameId = requestAnimationFrame(reverseStep);
-                                        };
-                                        animationFrameId = requestAnimationFrame(reverseStep);
+                                    .video-container {
+                                        position: relative; width: 100%; max-width: 1600px;
+                                        background-color: #000; opacity: 0;
+                                        transform: scale(0.98) translateY(8px);
+                                        animation: fadeInZoomUp 2.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+                                        transform-origin: center center;
                                     }
-                                    video.addEventListener("loadedmetadata", () => {
-                                        const loopDuration = framesToLoop / frameRate;
-                                        loopStartTime = video.duration - loopDuration;
-                                        initialPlayTriggerTime = initialPlayFrames / frameRate;
-                                        if (loopStartTime < 0 || video.duration === 0) loopStartTime = 0;
-                                        if (initialPlayTriggerTime >= loopStartTime && loopStartTime > 0) initialPlayTriggerTime = loopStartTime;
-                                        video.pause(); video.currentTime = 0;
-                                    });
-                                    if (!isTouchDevice()) {
-                                        video.addEventListener("mouseenter", () => {
-                                            isHovering = true; stopReversePlayback(); video.currentTime = 0;
-                                            isPlayingInitialSegment = true; video.play().catch(e => {});
-                                        });
-                                        video.addEventListener("mouseleave", () => {
-                                            isHovering = false; isPlayingInitialSegment = false; video.pause();
-                                            if (video.currentTime > 0) playReverseFrames();
-                                            else { video.currentTime = 0; video.pause(); }
-                                        });
-                                    } else {
-                                        video.addEventListener("touchstart", (e) => {
-                                            isHolding = true; stopReversePlayback();
-                                            holdTimeout = setTimeout(() => {
-                                                if (isHolding) {
-                                                    video.currentTime = 0; isPlayingInitialSegment = true;
-                                                    video.play().catch(e => {});
+                                    @keyframes fadeInZoomUp {
+                                        from { opacity: 0; transform: scale(0.98) translateY(8px); }
+                                        to { opacity: 1; transform: scale(1) translateY(0); }
+                                    }
+                                    video { width: 100%; height: auto; display: block; cursor: pointer; }
+                                </style>
+                            </head>
+                            <body>
+                                <div class="video-container">
+                                    <video id="interactiveVideo" preload="metadata">
+                                        <source src="https://github.com/WIKDMotorsports/TestSite/raw/refs/heads/main/FanInteract.mp4" type="video/mp4">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                </div>
+                                <script>
+                                    document.addEventListener("DOMContentLoaded", () => {
+                                        const video = document.getElementById("interactiveVideo");
+                                        const framesToLoop = 16, frameRate = 22, initialPlayFrames = 4, reversePlayFrames = 4;
+                                        let loopStartTime = 0, initialPlayTriggerTime = 0;
+                                        let isHovering = false, isHolding = false, holdTimeout = null;
+                                        const holdDelay = 200;
+                                        let isPlayingInitialSegment = false, isReversing = false, animationFrameId = null;
+                                        const isTouchDevice = () => ("ontouchstart" in window) || (navigator.maxTouchPoints > 0);
+                                        function stopReversePlayback() {
+                                            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+                                            animationFrameId = null; isReversing = false;
+                                        }
+                                        function playReverseFrames() {
+                                            stopReversePlayback(); isReversing = true; video.pause();
+                                            const targetReverseTime = Math.max(0, video.currentTime - (reversePlayFrames / frameRate));
+                                            const reverseStep = () => {
+                                                if (!isReversing || video.currentTime <= targetReverseTime) {
+                                                    video.currentTime = 0; video.pause(); stopReversePlayback(); return;
                                                 }
-                                            }, holdDelay);
+                                                video.currentTime = Math.max(0, video.currentTime - (1 / frameRate));
+                                                if (isReversing) animationFrameId = requestAnimationFrame(reverseStep);
+                                            };
+                                            animationFrameId = requestAnimationFrame(reverseStep);
+                                        }
+                                        video.addEventListener("loadedmetadata", () => {
+                                            const loopDuration = framesToLoop / frameRate;
+                                            loopStartTime = video.duration - loopDuration;
+                                            initialPlayTriggerTime = initialPlayFrames / frameRate;
+                                            if (loopStartTime < 0 || video.duration === 0) loopStartTime = 0;
+                                            if (initialPlayTriggerTime >= loopStartTime && loopStartTime > 0) initialPlayTriggerTime = loopStartTime;
+                                            video.pause(); video.currentTime = 0;
                                         });
-                                        const endTouch = () => {
-                                            clearTimeout(holdTimeout);
-                                            if (isHolding) {
-                                                isHolding = false; isPlayingInitialSegment = false; video.pause();
+                                        if (!isTouchDevice()) {
+                                            video.addEventListener("mouseenter", () => {
+                                                isHovering = true; stopReversePlayback(); video.currentTime = 0;
+                                                isPlayingInitialSegment = true; video.play().catch(e => {});
+                                            });
+                                            video.addEventListener("mouseleave", () => {
+                                                isHovering = false; isPlayingInitialSegment = false; video.pause();
                                                 if (video.currentTime > 0) playReverseFrames();
                                                 else { video.currentTime = 0; video.pause(); }
-                                            }
-                                        };
-                                        video.addEventListener("touchend", endTouch);
-                                        video.addEventListener("touchcancel", endTouch);
-                                    }
-                                    video.addEventListener("timeupdate", () => {
-                                        if (isReversing) return;
-                                        const isActive = isTouchDevice() ? isHolding : isHovering;
-                                        if (!isActive || video.paused || loopStartTime === 0) return;
-                                        if (isPlayingInitialSegment) {
-                                            if (video.currentTime >= initialPlayTriggerTime) {
-                                                video.currentTime = loopStartTime; isPlayingInitialSegment = false;
-                                            }
+                                            });
                                         } else {
-                                            const loopEndThreshold = video.duration - (1 / frameRate) * 5;
-                                            if (video.currentTime >= loopEndThreshold) video.currentTime = loopStartTime;
+                                            video.addEventListener("touchstart", (e) => {
+                                                isHolding = true; stopReversePlayback();
+                                                holdTimeout = setTimeout(() => {
+                                                    if (isHolding) {
+                                                        video.currentTime = 0; isPlayingInitialSegment = true;
+                                                        video.play().catch(e => {});
+                                                    }
+                                                }, holdDelay);
+                                            });
+                                            const endTouch = () => {
+                                                clearTimeout(holdTimeout);
+                                                if (isHolding) {
+                                                    isHolding = false; isPlayingInitialSegment = false; video.pause();
+                                                    if (video.currentTime > 0) playReverseFrames();
+                                                    else { video.currentTime = 0; video.pause(); }
+                                                }
+                                            };
+                                            video.addEventListener("touchend", endTouch);
+                                            video.addEventListener("touchcancel", endTouch);
                                         }
+                                        video.addEventListener("timeupdate", () => {
+                                            if (isReversing) return;
+                                            const isActive = isTouchDevice() ? isHolding : isHovering;
+                                            if (!isActive || video.paused || loopStartTime === 0) return;
+                                            if (isPlayingInitialSegment) {
+                                                if (video.currentTime >= initialPlayTriggerTime) {
+                                                    video.currentTime = loopStartTime; isPlayingInitialSegment = false;
+                                                }
+                                            } else {
+                                                const loopEndThreshold = video.duration - (1 / frameRate) * 5;
+                                                if (video.currentTime >= loopEndThreshold) video.currentTime = loopStartTime;
+                                            }
+                                        });
+                                        video.addEventListener("ended", () => {
+                                            const isActive = isTouchDevice() ? isHolding : isHovering;
+                                            if (isActive && loopStartTime > 0) {
+                                                video.currentTime = loopStartTime; video.play().catch(e => {});
+                                            } else if (!isActive) {
+                                                video.currentTime = 0; video.pause();
+                                            }
+                                        });
+                                        video.addEventListener("error", () => console.error("Error loading video:", video.error));
                                     });
-                                    video.addEventListener("ended", () => {
-                                        const isActive = isTouchDevice() ? isHolding : isHovering;
-                                        if (isActive && loopStartTime > 0) {
-                                            video.currentTime = loopStartTime; video.play().catch(e => {});
-                                        } else if (!isActive) {
-                                            video.currentTime = 0; video.pause();
-                                        }
-                                    });
-                                    video.addEventListener("error", () => console.error("Error loading video:", video.error));
-                                });
-                            <\/script>
-                        </body>
-                        </html>
-                    '></iframe>
-                    <div class="slide-content">
-                         <div class="slide-title-group">
-                            <h1>WIKD Cooling Fan</h1>
-                            <a href="#" class="btn"><span>Shop Now</span></a>
+                                <\/script>
+                            </body>
+                            </html>
+                        '></iframe>
+                        <div class="slide-content">
+                             <div class="slide-title-group">
+                                <h1>WIKD Cooling Fan</h1>
+                                <a href="#" class="btn"><span>Shop Now</span></a>
+                            </div>
                         </div>
                     </div>
-                </div>
 
+                </div>
             </div>
         </section>
 
@@ -925,6 +944,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         
         // --- HERO SLIDESHOW LOGIC ---
+        const heroWrapper = document.querySelector('.hero-wrapper');
         const slideshow = document.getElementById('slideshow');
         const slides = slideshow.querySelectorAll('.slide');
         const slideThemes = Array.from(slides).map(slide => slide.dataset.theme);
@@ -932,33 +952,52 @@
         let slideInterval;
 
         function showSlide(index) {
+            // Deactivate previous slide
             const prevSlide = slides[currentIndex];
-            const prevVideo = prevSlide.querySelector('video');
+            const prevVideo = prevSlide.querySelector('video.slide-background');
             if (prevVideo) prevVideo.pause();
 
-            slideshow.classList.remove(slideThemes[currentIndex]);
             slides[currentIndex].classList.remove('active');
             
-            currentIndex = index;
+            // Remove old theme classes from wrapper and container
+            if (slideThemes[currentIndex]) {
+                heroWrapper.classList.remove(slideThemes[currentIndex]);
+                slideshow.classList.remove(slideThemes[currentIndex]);
+            }
             
+            // Activate new slide
+            currentIndex = index;
             const newSlide = slides[currentIndex];
-            const newVideo = newSlide.querySelector('video');
+            const newVideo = newSlide.querySelector('video.slide-background');
             
             newSlide.classList.add('active');
-            slideshow.classList.add(slideThemes[currentIndex]);
 
+            // Add new theme classes to wrapper and container
+            if (slideThemes[currentIndex]) {
+                heroWrapper.classList.add(slideThemes[currentIndex]);
+                slideshow.classList.add(slideThemes[currentIndex]);
+            }
+
+            // Play new video
             if (newVideo) {
                 newVideo.currentTime = 0;
-                newVideo.play().catch(error => console.warn("Video autoplay prevented:", error));
+                newVideo.play().catch(e => console.warn("Main video autoplay failed", e));
             }
         }
 
         function nextSlide() {
-            showSlide((currentIndex + 1) % slides.length);
+            const newIndex = (currentIndex + 1) % slides.length;
+            showSlide(newIndex);
         }
 
-        slideInterval = setInterval(nextSlide, 7000);
+        function startInterval() {
+            slideInterval = setInterval(nextSlide, 7000);
+        }
+
+        // Initialize Everything
         showSlide(0);
+        startInterval();
+
 
         // --- DYNAMIC IFRAME LOADER ---
         function loadDynamicIframe(frameId, url, isDynamicHeight) {
