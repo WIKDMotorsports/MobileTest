@@ -359,7 +359,7 @@
         }
         .packages-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(4, 1fr); /* MODIFIED: Default to 4 columns (1x4) */
             gap: 30px;
         }
         .package-card {
@@ -497,7 +497,7 @@
         /* --- GALLERY SECTION --- */
         .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(4, 1fr); /* MODIFIED: Default to 4 columns (1x4) */
             gap: 20px;
         }
         .gallery-item {
@@ -554,7 +554,16 @@
         .lightbox-prev { top: 50%; left: 20px; transform: translateY(-50%); }
         .lightbox-next { top: 50%; right: 20px; transform: translateY(-50%); }
 
-        /* --- ORIGINAL RESPONSIVE STYLES --- */
+        /* --- RESPONSIVE STYLES --- */
+
+        /* ADDED: New breakpoint for 2x2 grid layout */
+        @media (max-width: 1200px) {
+            .packages-grid,
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr); /* Switch to 2x2 grid */
+            }
+        }
+
         @media (max-width: 900px) {
             .mobile-nav-toggle {
                 display: block; background: none; border: none;
@@ -619,7 +628,7 @@
 
             /* Packages Grid */
             .packages-grid {
-                grid-template-columns: 1fr; /* Single column on mobile */
+                /* MODIFIED: Removed grid-template-columns to inherit 2x2 from 1200px breakpoint */
                 gap: 20px;
             }
 
@@ -647,7 +656,7 @@
             
             /* Gallery */
             .gallery-grid {
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                /* MODIFIED: Removed grid-template-columns to inherit 2x2 from 1200px breakpoint */
                 gap: 10px;
             }
         }
