@@ -335,11 +335,7 @@
         #questionnaire-section {
             padding-top: 0;
             padding-bottom: 0;
-            padding-left: 5%;
-            padding-right: 5%;
-        }
-        #questionnaire-section .container {
-            /* This rule was redundant and has been removed to allow section padding to apply */
+            /* MODIFIED: Removed fixed horizontal padding to inherit from .section */
         }
         .questionnaire-iframe {
             border: none;
@@ -664,6 +660,11 @@
         @media (max-width: 480px) {
             .section {
                 padding: 30px 4%;
+            }
+            
+            .hero {
+                padding-left: 4%;
+                padding-right: 4%;
             }
             
             .hero-wrapper {
