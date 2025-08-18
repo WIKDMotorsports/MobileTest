@@ -219,11 +219,9 @@
             z-index: 1;
         }
 
-        .slide-background.video-fit-height {
-            width: auto;
-            height: 100%;
-            left: 50%;
-            transform: translateX(-50%);
+        /* MODIFIED: Ensure video fits by width and is letterboxed */
+        video.slide-background {
+            object-fit: contain;
         }
         
         .slide-background.iframe-fit-height {
@@ -715,7 +713,7 @@
                 <div class="slideshow-container" id="slideshow">
                     
                     <div class="slide" data-theme="theme-exhaust">
-                        <video class="slide-background video-fit-height" id="exhaust-video" muted playsinline>
+                        <video class="slide-background" id="exhaust-video" muted playsinline>
                             <source src="https://github.com/WIKDMotorsports/TestSite/raw/refs/heads/main/5-8mbps.mp4" type="video/mp4">
                         </video>
                         <div class="slide-content">
