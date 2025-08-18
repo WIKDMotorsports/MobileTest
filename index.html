@@ -120,10 +120,9 @@
 
         /* --- HERO SLIDESHOW SECTION --- */
         .hero {
+            /* Horizontal padding is now handled by the .section class for consistency */
             padding-top: 50px;
             padding-bottom: 50px;
-            padding-left: 5%;
-            padding-right: 5%;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -333,11 +332,9 @@
 
         /* --- EMBEDDED QUESTIONNAIRE SECTION --- */
         #questionnaire-section {
-            /* Mimic .hero for consistent layout and padding */
+            /* Horizontal padding is now handled by the .section class for consistency */
             padding-top: 0;
             padding-bottom: 60px;
-            padding-left: 5%;
-            padding-right: 5%;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -660,13 +657,9 @@
         }
 
         @media (max-width: 480px) {
-            .section, #questionnaire-section {
+            /* This single rule now controls all sections consistently */
+            .section {
                 padding-left: 4%;
-                padding-right: 4%;
-            }
-            
-            .hero {
-                 padding-left: 4%;
                 padding-right: 4%;
             }
             
@@ -713,7 +706,8 @@
 
     <main>
         <!-- HERO SLIDESHOW SECTION -->
-        <section class="hero">
+        <!-- Added 'section' class for consistent padding -->
+        <section class="hero section">
             <div class="hero-wrapper">
                 <div class="slideshow-container" id="slideshow">
                     
@@ -890,7 +884,8 @@
         </section>
 
         <!-- EMBEDDED QUESTIONNAIRE SECTION -->
-        <section id="questionnaire-section">
+        <!-- Added 'section' class for consistent padding -->
+        <section id="questionnaire-section" class="section">
             <div class="questionnaire-wrapper">
                 <iframe id="questionnaireFrame" class="questionnaire-iframe" title="WIKD Motorsports Build Questionnaire"></iframe>
             </div>
