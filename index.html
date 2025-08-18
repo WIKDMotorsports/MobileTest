@@ -64,14 +64,14 @@
         }
 
         .section {
-            padding: 60px 5%; /* Adjusted vertical padding */
+            padding: 60px 5%;
             overflow: hidden;
         }
 
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 0; /* Removed horizontal padding for consistency */
+            padding: 0;
         }
         
         .section-title {
@@ -120,7 +120,7 @@
 
         /* --- HERO SLIDESHOW SECTION --- */
         .hero {
-            padding-top: 50px; /* Adjusted for full page view */
+            padding-top: 50px;
             padding-bottom: 50px;
             padding-left: 5%;
             padding-right: 5%;
@@ -333,14 +333,8 @@
 
         /* --- EMBEDDED QUESTIONNAIRE SECTION --- */
         #questionnaire-section {
-            padding: 0 5% 60px 5%; /* top, right, bottom, left */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .questionnaire-wrapper {
-            width: 100%;
-            max-width: 1400px; /* Match hero-wrapper and container */
+            padding-top: 0;
+            padding-bottom: 60px;
         }
         .questionnaire-iframe {
             border: none;
@@ -584,7 +578,7 @@
 
         /* --- ENHANCED MOBILE RESPONSIVE STYLES --- */
         @media (max-width: 768px) {
-            .section, #questionnaire-section {
+            .section {
                 padding-top: 40px;
                 padding-bottom: 40px;
             }
@@ -655,7 +649,7 @@
         }
 
         @media (max-width: 480px) {
-            .section, #questionnaire-section {
+            .section {
                 padding-left: 4%;
                 padding-right: 4%;
                 padding-top: 30px;
@@ -887,8 +881,8 @@
         </section>
 
         <!-- EMBEDDED QUESTIONNAIRE SECTION -->
-        <section id="questionnaire-section">
-            <div class="questionnaire-wrapper">
+        <section id="questionnaire-section" class="section">
+            <div class="container">
                 <iframe id="questionnaireFrame" class="questionnaire-iframe" title="WIKD Motorsports Build Questionnaire"></iframe>
             </div>
         </section>
