@@ -333,17 +333,21 @@
 
         /* --- EMBEDDED QUESTIONNAIRE SECTION --- */
         #questionnaire-section {
-            padding-top: 0;
-            padding-bottom: 0;
-            padding-left: 5%;
-            padding-right: 5%;
+            padding: 0 5% 60px 5%; /* top, right, bottom, left */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .questionnaire-wrapper {
+            width: 100%;
+            max-width: 1400px; /* Match hero-wrapper and container */
         }
         .questionnaire-iframe {
             border: none;
             width: 100%;
             display: block;
             background-color: transparent;
-            transition: height 0.2s ease-out; /* Smooth height transition */
+            transition: height 0.2s ease-out;
         }
 
         /* --- PERFORMANCE PACKAGES SECTION --- */
@@ -580,8 +584,9 @@
 
         /* --- ENHANCED MOBILE RESPONSIVE STYLES --- */
         @media (max-width: 768px) {
-            .section {
-                padding: 40px 5%;
+            .section, #questionnaire-section {
+                padding-top: 40px;
+                padding-bottom: 40px;
             }
 
             .section-title {
@@ -650,8 +655,16 @@
         }
 
         @media (max-width: 480px) {
-            .section {
-                padding: 30px 4%;
+            .section, #questionnaire-section {
+                padding-left: 4%;
+                padding-right: 4%;
+                padding-top: 30px;
+                padding-bottom: 30px;
+            }
+            
+            .hero {
+                 padding-left: 4%;
+                padding-right: 4%;
             }
             
             .hero-wrapper {
@@ -874,8 +887,10 @@
         </section>
 
         <!-- EMBEDDED QUESTIONNAIRE SECTION -->
-        <section id="questionnaire-section" class="section">
-            <iframe id="questionnaireFrame" class="questionnaire-iframe" title="WIKD Motorsports Build Questionnaire"></iframe>
+        <section id="questionnaire-section">
+            <div class="questionnaire-wrapper">
+                <iframe id="questionnaireFrame" class="questionnaire-iframe" title="WIKD Motorsports Build Questionnaire"></iframe>
+            </div>
         </section>
 
 
