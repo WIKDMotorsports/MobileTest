@@ -118,7 +118,7 @@
         .main-nav a:hover::after, .main-nav a.active::after { transform: scaleX(1); transform-origin: left; }
         .mobile-nav-toggle { display: none; }
 
-        /* --- HERO & CONFIGURATOR SHARED STRUCTURE --- */
+        /* --- HERO SLIDESHOW SECTION --- */
         .hero {
             padding-top: 50px;
             padding-bottom: 50px;
@@ -333,15 +333,20 @@
 
         /* --- EMBEDDED QUESTIONNAIRE SECTION --- */
         #questionnaire-section {
+            /* Mimic .hero for consistent layout and padding */
             padding-top: 0;
             padding-bottom: 60px;
+            padding-left: 5%;
+            padding-right: 5%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-        
         .questionnaire-wrapper {
+            /* Mimic .hero-wrapper for consistent width */
             width: 100%;
-            max-width: 1400px; /* Match hero-wrapper */
+            max-width: 1400px;
         }
-
         .questionnaire-iframe {
             border: none;
             width: 100%;
@@ -598,9 +603,6 @@
                 padding-top: 80px; /* Give more space below header */
                 padding-bottom: 40px;
             }
-            #questionnaire-section.hero {
-                padding-top: 0;
-            }
 
             .hero-wrapper {
                 aspect-ratio: 4 / 3; /* Taller aspect ratio for mobile */
@@ -658,7 +660,7 @@
         }
 
         @media (max-width: 480px) {
-            .section {
+            .section, #questionnaire-section {
                 padding-left: 4%;
                 padding-right: 4%;
             }
@@ -888,8 +890,8 @@
         </section>
 
         <!-- EMBEDDED QUESTIONNAIRE SECTION -->
-        <section id="questionnaire-section" class="hero">
-            <div class="hero-wrapper" style="aspect-ratio: auto;">
+        <section id="questionnaire-section">
+            <div class="questionnaire-wrapper">
                 <iframe id="questionnaireFrame" class="questionnaire-iframe" title="WIKD Motorsports Build Questionnaire"></iframe>
             </div>
         </section>
