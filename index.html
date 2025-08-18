@@ -64,14 +64,14 @@
         }
 
         .section {
-            padding: 60px 5%;
+            padding: 60px 5%; /* Adjusted vertical padding */
             overflow: hidden;
         }
 
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 0;
+            padding: 0; /* Removed horizontal padding for consistency */
         }
         
         .section-title {
@@ -120,9 +120,10 @@
 
         /* --- HERO SLIDESHOW SECTION --- */
         .hero {
-            /* Horizontal padding is now handled by the .section class for consistency */
-            padding-top: 50px;
+            padding-top: 50px; /* Adjusted for full page view */
             padding-bottom: 50px;
+            padding-left: 5%;
+            padding-right: 5%;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -332,24 +333,20 @@
 
         /* --- EMBEDDED QUESTIONNAIRE SECTION --- */
         #questionnaire-section {
-            /* Horizontal padding is now handled by the .section class for consistency */
             padding-top: 0;
-            padding-bottom: 60px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            padding-bottom: 0;
+            padding-left: 5%;
+            padding-right: 5%;
         }
-        .questionnaire-wrapper {
-            /* Mimic .hero-wrapper for consistent width */
-            width: 100%;
-            max-width: 1400px;
+        #questionnaire-section .container {
+            /* This rule was redundant and has been removed to allow section padding to apply */
         }
         .questionnaire-iframe {
             border: none;
             width: 100%;
             display: block;
             background-color: transparent;
-            transition: height 0.2s ease-out;
+            transition: height 0.2s ease-out; /* Smooth height transition */
         }
 
         /* --- PERFORMANCE PACKAGES SECTION --- */
@@ -587,8 +584,7 @@
         /* --- ENHANCED MOBILE RESPONSIVE STYLES --- */
         @media (max-width: 768px) {
             .section {
-                padding-top: 40px;
-                padding-bottom: 40px;
+                padding: 40px 5%;
             }
 
             .section-title {
@@ -657,10 +653,8 @@
         }
 
         @media (max-width: 480px) {
-            /* This single rule now controls all sections consistently */
             .section {
-                padding-left: 4%;
-                padding-right: 4%;
+                padding: 30px 4%;
             }
             
             .hero-wrapper {
@@ -706,8 +700,7 @@
 
     <main>
         <!-- HERO SLIDESHOW SECTION -->
-        <!-- Added 'section' class for consistent padding -->
-        <section class="hero section">
+        <section class="hero">
             <div class="hero-wrapper">
                 <div class="slideshow-container" id="slideshow">
                     
@@ -884,9 +877,8 @@
         </section>
 
         <!-- EMBEDDED QUESTIONNAIRE SECTION -->
-        <!-- Added 'section' class for consistent padding -->
         <section id="questionnaire-section" class="section">
-            <div class="questionnaire-wrapper">
+            <div class="container">
                 <iframe id="questionnaireFrame" class="questionnaire-iframe" title="WIKD Motorsports Build Questionnaire"></iframe>
             </div>
         </section>
