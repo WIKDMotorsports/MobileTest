@@ -333,8 +333,19 @@
 
         /* --- EMBEDDED QUESTIONNAIRE SECTION --- */
         #questionnaire-section {
+            /* Mimic .hero for consistent layout and padding */
             padding-top: 0;
             padding-bottom: 60px;
+            padding-left: 5%;
+            padding-right: 5%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .questionnaire-wrapper {
+            /* Mimic .hero-wrapper for consistent width */
+            width: 100%;
+            max-width: 1400px;
         }
         .questionnaire-iframe {
             border: none;
@@ -649,11 +660,9 @@
         }
 
         @media (max-width: 480px) {
-            .section {
+            .section, #questionnaire-section {
                 padding-left: 4%;
                 padding-right: 4%;
-                padding-top: 30px;
-                padding-bottom: 30px;
             }
             
             .hero {
@@ -881,8 +890,8 @@
         </section>
 
         <!-- EMBEDDED QUESTIONNAIRE SECTION -->
-        <section id="questionnaire-section" class="section">
-            <div class="container">
+        <section id="questionnaire-section">
+            <div class="questionnaire-wrapper">
                 <iframe id="questionnaireFrame" class="questionnaire-iframe" title="WIKD Motorsports Build Questionnaire"></iframe>
             </div>
         </section>
