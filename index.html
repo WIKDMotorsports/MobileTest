@@ -2,7 +2,7 @@
 <html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale-1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>WIKD Build - 2016 CORVETTE Z06 Z07</title>
 
   <!-- Tailwind CSS -->
@@ -151,12 +151,23 @@
       background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 70%);
       z-index: 4;
     }
+
+    /* --- MOBILE GALLERY --- */
+    #mobileGalleryWrapper {
+        transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    #mobileGalleryWrapper.gallery-fullscreen {
+        height: 100vh;
+    }
+    .mobile-gallery-item img {
+        box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
+    }
   </style>
 </head>
 <body class="overflow-x-hidden">
   
   <!-- MOBILE-ONLY: Horizontal Gallery Wrapper -->
-  <div id="mobileGalleryWrapper" class="lg:hidden fixed top-0 left-0 w-full h-[45vh] z-10 overflow-hidden">
+  <div id="mobileGalleryWrapper" class="lg:hidden fixed top-0 left-0 w-full h-[35vh] z-10 overflow-hidden">
     <div id="mobileTickerInner" class="flex h-full will-change-transform">
       <!-- Mobile gallery images will be populated by JS -->
     </div>
@@ -190,7 +201,7 @@
       </div>
       
       <!-- Content Card -->
-      <main id="contentCard" class="relative z-20 w-full lg:w-1/2 max-w-4xl bg-[#0A0A0A] lg:bg-black/75 border-t border-gray-800 lg:border-t-0 lg:border border-gray-800 shadow-2xl lg:clip-path-custom flex flex-col mt-[45vh] lg:mt-0">
+      <main id="contentCard" class="relative z-20 w-full lg:w-1/2 max-w-4xl bg-[#0A0A0A] lg:bg-black/75 border-t border-gray-800 lg:border-t-0 lg:border border-gray-800 shadow-2xl lg:clip-path-custom flex flex-col mt-[35vh] lg:mt-0">
       
         <!-- Card Header -->
         <header class="grid grid-cols-2 gap-5 items-center px-4 py-2 sm:px-5 sm:py-3 md:px-6 md:py-4 lg:px-8 lg:py-6">
@@ -290,6 +301,7 @@
 
   <!-- Scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/Draggable.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   
@@ -334,15 +346,21 @@
 
     // --- MOBILE VIEW SETUP ---
     function setupMobileView() {
-        if (desktopTickerAnimation) desktopTickerAnimation.kill();
+        if (desktopTickerAnimation) {
+            cancelAnimationFrame(desktopTickerAnimation);
+            desktopTickerAnimation = null;
+        }
         
+        gsap.registerPlugin(Draggable);
+
+        const galleryWrapper = document.getElementById('mobileGalleryWrapper');
         const mobileTickerInner = document.getElementById('mobileTickerInner');
         if (mobileTickerInner.children.length > 0) return; // Already setup
 
         // Populate mobile gallery
         originalImageSources.forEach(src => {
             const imgContainer = document.createElement('div');
-            imgContainer.className = 'mobile-gallery-item h-full flex-shrink-0 mr-4';
+            imgContainer.className = 'mobile-gallery-item h-full flex-shrink-0 mr-4 cursor-pointer';
             const img = document.createElement('img');
             img.src = src;
             img.className = 'h-full w-auto object-cover rounded-md';
@@ -359,19 +377,44 @@
         
         setupLightboxListeners('.mobile-gallery-item');
         
-        // Horizontal animation with GSAP
-        gsap.set(mobileTickerInner, {x: 0});
-        mobileTickerAnimation = gsap.to(mobileTickerInner, {
-            x: '-50%',
-            duration: 40,
-            ease: 'none',
-            repeat: -1,
-        });
+        // --- Draggable Carousel Logic ---
+        setTimeout(() => {
+            const allItems = mobileTickerInner.querySelectorAll('.mobile-gallery-item');
+            if (allItems.length === 0 || allItems[0].offsetWidth === 0) return;
+            
+            const itemWidth = allItems[0].offsetWidth + 16; // 16px = mr-4
+            const wrapWidth = (allItems.length / 2) * itemWidth;
+            const totalWidth = allItems.length * itemWidth;
+            gsap.set(mobileTickerInner, { width: totalWidth });
 
-        // Set initial scroll position to show top of info card
-        const galleryHeight = document.getElementById('mobileGalleryWrapper').offsetHeight;
-        const initialScroll = galleryHeight * 0.85; // Scroll 85% of the gallery height
-        setTimeout(() => window.scrollTo({ top: initialScroll, behavior: 'smooth' }), 100);
+            const wrap = gsap.utils.wrap(0, -wrapWidth);
+
+            Draggable.create(mobileTickerInner, {
+                type: "x",
+                inertia: true,
+                onDrag: function() {
+                    gsap.set(mobileTickerInner, { x: wrap(this.x) });
+                },
+                onThrowUpdate: function() {
+                    gsap.set(mobileTickerInner, { x: wrap(this.x) });
+                }
+            });
+        }, 100);
+
+        // --- Scroll to Fullscreen Logic ---
+        window.addEventListener('scroll', () => {
+            if (!isMobile) return;
+            if (window.scrollY === 0) {
+                galleryWrapper.classList.add('gallery-fullscreen');
+            } else {
+                galleryWrapper.classList.remove('gallery-fullscreen');
+            }
+        }, { passive: true });
+
+        // Set initial scroll position
+        const initialGalleryHeight = galleryWrapper.offsetHeight;
+        const initialScroll = initialGalleryHeight * 0.9;
+        setTimeout(() => window.scrollTo({ top: initialScroll, behavior: 'smooth' }), 200);
     }
 
     // --- DESKTOP VIEW SETUP ---
@@ -858,5 +901,4 @@
   </script>
 </body>
 </html>
-
 
