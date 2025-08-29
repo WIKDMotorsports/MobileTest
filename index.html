@@ -168,7 +168,7 @@
   
   <!-- MOBILE-ONLY: Horizontal Gallery Wrapper -->
   <div id="mobileGalleryWrapper" class="lg:hidden fixed top-0 left-0 w-full h-[35vh] z-10 overflow-hidden">
-    <div id="mobileTickerInner" class="flex h-full will-change-transform">
+    <div id="mobileTickerInner" class="flex h-full items-center will-change-transform">
       <!-- Mobile gallery images will be populated by JS -->
     </div>
     <div class="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-[#0A0A0A] to-transparent"></div>
@@ -201,7 +201,7 @@
       </div>
       
       <!-- Content Card -->
-      <main id="contentCard" class="relative z-20 w-full lg:w-1/2 max-w-4xl bg-[#0A0A0A] lg:bg-black/75 border-t border-gray-800 lg:border-t-0 lg:border border-gray-800 shadow-2xl lg:clip-path-custom flex flex-col mt-[35vh] lg:mt-0">
+      <main id="contentCard" class="relative z-20 w-full lg:w-1/2 max-w-4xl bg-[#0A0A0A] lg:bg-black/75 border-t border-gray-800 lg:border-t-0 lg:border border-gray-800 shadow-2xl lg:clip-path-custom flex flex-col mt-[35vh] lg:mt-0 will-change-transform">
       
         <!-- Card Header -->
         <header class="grid grid-cols-2 gap-5 items-center px-4 py-2 sm:px-5 sm:py-3 md:px-6 md:py-4 lg:px-8 lg:py-6">
@@ -360,54 +360,69 @@
         // Populate mobile gallery
         originalImageSources.forEach(src => {
             const imgContainer = document.createElement('div');
-            imgContainer.className = 'mobile-gallery-item h-full flex-shrink-0 mr-4 cursor-pointer';
+            imgContainer.className = 'mobile-gallery-item h-full flex-shrink-0 mr-4 cursor-pointer p-4';
             const img = document.createElement('img');
             img.src = src;
             img.className = 'h-full w-auto object-cover rounded-md';
             imgContainer.appendChild(img);
             mobileTickerInner.appendChild(imgContainer);
         });
-
-        // Duplicate for seamless loop
-        const items = mobileTickerInner.querySelectorAll('.mobile-gallery-item');
-        items.forEach(item => {
-            const clone = item.cloneNode(true);
-            mobileTickerInner.appendChild(clone);
-        });
         
-        setupLightboxListeners('.mobile-gallery-item');
-        
-        // --- Draggable Carousel Logic ---
+        // --- Draggable Carousel & Auto-Scroll Logic ---
         setTimeout(() => {
-            const allItems = mobileTickerInner.querySelectorAll('.mobile-gallery-item');
+            const allItems = Array.from(mobileTickerInner.children);
             if (allItems.length === 0 || allItems[0].offsetWidth === 0) return;
             
-            const itemWidth = allItems[0].offsetWidth + 16; // 16px = mr-4
-            const wrapWidth = (allItems.length / 2) * itemWidth;
-            const totalWidth = allItems.length * itemWidth;
+            // Duplicate for seamless loop
+            allItems.forEach(item => {
+                const clone = item.cloneNode(true);
+                mobileTickerInner.appendChild(clone);
+            });
+            setupLightboxListeners('.mobile-gallery-item');
+            
+            const itemWidth = allItems[0].offsetWidth; 
+            const wrapWidth = allItems.length * itemWidth;
+            const totalWidth = allItems.length * 2 * itemWidth;
+            
             gsap.set(mobileTickerInner, { width: totalWidth });
+            gsap.set(mobileTickerInner, {x: 0});
+            
+            mobileTickerAnimation = gsap.to(mobileTickerInner, {
+                x: `-=${wrapWidth}`,
+                duration: 40,
+                ease: 'none',
+                repeat: -1,
+                modifiers: {
+                    x: gsap.utils.unitize(x => parseFloat(x) % -wrapWidth)
+                }
+            });
 
-            const wrap = gsap.utils.wrap(0, -wrapWidth);
+            const wrap = gsap.utils.wrap(-wrapWidth, 0);
 
             Draggable.create(mobileTickerInner, {
                 type: "x",
                 inertia: true,
+                onPress: () => mobileTickerAnimation.pause(),
                 onDrag: function() {
-                    gsap.set(mobileTickerInner, { x: wrap(this.x) });
+                    gsap.set(mobileTickerInner, { x: wrap(gsap.getProperty(mobileTickerInner, "x") + this.deltaX) });
                 },
                 onThrowUpdate: function() {
-                    gsap.set(mobileTickerInner, { x: wrap(this.x) });
-                }
+                     gsap.set(mobileTickerInner, { x: wrap(this.x) });
+                },
+                onDragEnd: () => mobileTickerAnimation.play(),
+                onThrowComplete: () => mobileTickerAnimation.play()
             });
         }, 100);
 
         // --- Scroll to Fullscreen Logic ---
         window.addEventListener('scroll', () => {
             if (!isMobile) return;
-            if (window.scrollY === 0) {
+            if (window.scrollY < 5) {
                 galleryWrapper.classList.add('gallery-fullscreen');
+                gsap.to(contentCard, { y: '100vh', duration: 0.4, ease: 'power2.inOut' });
             } else {
                 galleryWrapper.classList.remove('gallery-fullscreen');
+                gsap.to(contentCard, { y: 0, duration: 0.4, ease: 'power2.inOut' });
             }
         }, { passive: true });
 
